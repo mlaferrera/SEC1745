@@ -1,0 +1,3 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24)
+| stats sparkline values(server_name) AS Domains, values(src_ip) as Clients, values(dest_ip) as Server count  by ja3, ja3s
+| sort count desc

@@ -1,0 +1,5 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24)
+| eval id=md5(src_ip+ja3+ja3s)
+| lookup hash_count_by_host_baselines.csv id as id OUTPUT count, total_host_count,log_cumulative_like, log_hash_pair_like
+| table _time, src_ip, ja3s, server_name, subject, issuer, dest_ip, ja3, log_cumulative_like, log_hash_pair_like, count, total_host_count
+| sort log_hash_pair_like

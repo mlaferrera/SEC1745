@@ -1,0 +1,5 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24) 
+| eventstats count as total
+| stats values(ja3), values(dest_ip), values(src_ip) values(total) as total count by server_name ja3s
+| eval perc=round((count/total)*100,4)
+| sort + perc

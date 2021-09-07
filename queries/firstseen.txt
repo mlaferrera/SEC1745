@@ -1,0 +1,7 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24)
+| stats earliest(_time) as earliest latest(_time) as latest by ja3, ja3s, src_ip, server_name
+| eval maxlatest=now()  
+| eval isOutlier=if(earliest >= relative_time(maxlatest, "-1d@d"), 1, 0)
+| table ja3, ja3s, src_ip, server_name, earliest, latest, maxlatest, isOutlier
+| convert ctime(earliest) ctime(latest) ctime(maxlatest)
+| sort earliest desc

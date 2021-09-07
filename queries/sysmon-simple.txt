@@ -1,0 +1,9 @@
+(source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=3 src_ip IN (192.168.70.0/24))
+    OR 
+(sourcetype="bro:ssl:json" ja3=* ja3s=*) 
+| eval src_ip=if(sourcetype == "bro:ssl:json",'id.orig_h','src_ip') 
+| eval src_port=if(sourcetype == "bro:ssl:json",'id.orig_p','src_port') 
+| eval dest_ip=if(sourcetype == "bro:ssl:json",'id.resp_h','dest_ip') 
+| eval dest_port=if(sourcetype == "bro:ssl:json",'id.resp_p','dest_port') 
+| stats values(ja3) as ja3 values(ja3s) as ja3s values(process_path) as process_path values(server_name) as server_name by src_ip dest_ip dest_port 
+| search ja3=* ja3s=* process_path=* NOT process_path IN ("&lt;unknown process&gt;")

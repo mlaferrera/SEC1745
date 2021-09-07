@@ -1,0 +1,6 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24)
+| lookup asparse prefix as dest_ip
+| anomalydetection method=histogram action=filter pthresh=0.0001 src_ip, ja3, ja3s, asn, org.name, geo.country
+| stats max(log_event_prob) AS "Max Prob", min(log_event_prob) AS "Min Prob", values(probable_cause) AS "Probable Causes", values(dest_ip) AS "Dest IPs", values(server_name) AS "Server Names", values(ja3) AS "JA3", values(src_ip) as "Source IPs", values(geo.country) AS "Countries" count by asn, org.name, ja3s
+| table asn, org.name, Countries, "Server Names", "Probable Causes", "Max Prob", "Min Prob", "Dest IPs", ja3s, "JA3", "Source IPs", count
+| sort "Min Prob" ASC

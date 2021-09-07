@@ -1,0 +1,10 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24)
+| eval id=md5(src_ip+ja3+ja3s)
+| stats count by id,ja3,ja3s,src_ip
+| eventstats sum(count) as total_host_count by src_ip,ja3
+| eval hash_pair_likelihood=exact(count/total_host_count)
+| sort src_ip ja3 hash_pair_likelihood
+| streamstats sum(hash_pair_likelihood) as cumulative_likelihood by src_ip,ja3
+| eval log_cumulative_like=log(cumulative_likelihood)
+| eval log_hash_pair_like=log(hash_pair_likelihood)
+| outputlookup hash_count_by_host_baselines.csv

@@ -1,0 +1,3 @@
+pydantic
+faker
+flatten_json

@@ -1,0 +1,5 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24) AND NOT server_name IN ("*.exp-tas.com", "*.azureedge.net", "*.bing.com", "*.microsoft.com", "*.dtexservices.com", "*.windows.net", "*.google.com", "*.microsoftonline.com", "*.media-amazon.com", "*.googleapis.com", "*.cloudfront.net", "*.amazon.com", "*.ssl-images-amazon.com", "login.live.com", "*.msft.com", "*.msft.net", "*.azure.com" "*.office.com", "*.microsoftazuread-sso.com", "*.microsoftonline-p.com", "*.s3-us-west-2.amazonaws.com", "*.windows.com")
+| eval id=md5(src_ip+ja3+ja3s)
+| lookup hash_count_by_host_baselines.csv id as id OUTPUT count, total_host_count,log_cumulative_like, log_hash_pair_like
+| table _time, src_ip, ja3s, server_name, dest_ip, ja3, log_cumulative_like, log_hash_pair_like, count, total_host_count
+| sort log_hash_pair_like

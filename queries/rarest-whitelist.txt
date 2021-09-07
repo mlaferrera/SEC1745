@@ -1,0 +1,5 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24) AND NOT server_name IN ("*.exp-tas.com", "*.azureedge.net", "*.bing.com", "*.microsoft.com", "*.dtexservices.com", "*.windows.net", "*.google.com", "*.microsoftonline.com", "*.media-amazon.com", "*.googleapis.com", "*.cloudfront.net", "*.amazon.com", "*.ssl-images-amazon.com", "login.live.com", "*.msft.com", "*.msft.net", "*.azure.com" "*.office.com", "*.microsoftazuread-sso.com", "*.microsoftonline-p.com", "*.s3-us-west-2.amazonaws.com")
+| eventstats count as total
+| stats values(ja3), values(dest_ip), values(src_ip) values(total) as total count by server_name ja3s
+| eval perc=round((count/total)*100,4)
+| sort + perc

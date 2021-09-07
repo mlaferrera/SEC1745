@@ -1,0 +1,5 @@
+sourcetype="bro:ssl:json" ja3="*" ja3s="*" src_ip IN (192.168.70.0/24) AND NOT server_name IN ("*.exp-tas.com", "*.azureedge.net", "*.bing.com", "*.microsoft.com", "*.dtexservices.com", "*.windows.net", "*.windows.com", "*.microsoftonline.com", "*.media-amazon.com", "*.googleapis.com", "*.cloudfront.net", "*.amazon.com", "*.ssl-images-amazon.com", "login.live.com", "*.msft.com", "*.msft.net", "*.azure.com" "*.office.com", "*.microsoftazuread-sso.com", "*.microsoftonline-p.com", "*.s3-us-west-2.amazonaws.com", "*.google.com", "*.skype.com", "*.msecnd.net")
+| anomalydetection method=histogram action=annotate pthresh=0.0001 src_ip, ja3, ja3s
+| stats sparkline max(log_event_prob) AS "Max Prob", min(log_event_prob) AS "Min Prob", values(probable_cause) AS "Probable Causes", values(dest_ip) AS "Dest IPs", values(server_name) AS "Server Names", values(ja3) AS "JA3", values(src_ip) as "Source IPs" count by ja3s
+| table "Server Names", "Probable Causes", "Max Prob", "Min Prob", "Dest IPs", ja3s, "JA3", "Source IPs", count
+| sort "Min Prob" asc
