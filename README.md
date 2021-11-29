@@ -128,7 +128,7 @@ Welcome to the supplemental information from the above talk. You'll find all of 
 ## Tools
 
 
-- [asparser](https://github.com/mlaferrera/asparser)<br>
+- [asparser](https://github.com/splunk/asparser)<br>
     - A python library that can quickly generate ASN and Geolocation datasets
 
 
