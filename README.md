@@ -1,6 +1,6 @@
 # Hunting the Known Unknown -- Software Supply Chain Attacks
 Splunk .conf 2021 - SEC1745<br>
-[Ryan Kovar (@meansec)](https://twitter.com/meansec) and [Marcus LaFerrera (@mlaferrera)](https://twitter.com/mlaferrera)
+[Ryan Kovar (@meansec)](https://twitter.com/meansec) and [Marcus LaFerrera (@mlaferrera@mastodon.social)](https://mastodon.social/@mlaferrera)
 
 
 Welcome to the supplemental information from the above talk. You'll find all of the queries we used, along with any references to code, apps, and perhaps more.
